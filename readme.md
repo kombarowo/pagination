@@ -1,1 +1,1 @@
-**Custom JSON pagination
+**Custom JSON pagination**
