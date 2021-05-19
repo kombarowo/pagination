@@ -25,8 +25,18 @@ function getPaginationItems({ total = 20, current = 10, pageRange = 3 } = {}) {
 
     }
 
-    console.log(items);
-    return items;
+    const result = items.filter(i => i.show).map(i => {
+
+      delete i.show;
+  
+      if (i.content.toString().trim() === current.toString().trim()) {
+        i.active = true;
+      }
+  
+      return i;
+    });
+  
+    return result;
   }
 
   // main case
@@ -72,7 +82,16 @@ function getPaginationItems({ total = 20, current = 10, pageRange = 3 } = {}) {
       }
     }
 
-    if (current >= pageRange) {
+    if(current === pageRange) {
+      page1.show = false;
+      page2.show = true;
+
+      if(i <= pageRange ) {
+        items[i].show = true;
+      }
+    }
+
+    if (current > pageRange) {
 
       page1.show = true;
 
