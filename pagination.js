@@ -1,8 +1,19 @@
-function getPaginationItems({ total = 20, current = 10, pageRange = 3 } = {}) {
+/**
+ * @param {Object} options
+ * @param {number|string} options.total total pages
+ * @param {number|string} options.current current page
+ * @param {number|string} options.pageRange count of displayed pages
+ * @returns {Object} pagination object
+ */
+function getPaginationItems({ total = 10, current = 6, pageRange = 3 } = {}) {
   const DOTS = 2;
   const LAST_INDEX = total + DOTS - 1;
 
   let items = [];
+
+  total = parseInt(total);
+  current = parseInt(current);
+  pageRange = parseInt(pageRange);
 
   pageRange += DOTS;
   if (pageRange < 1) { 1 + DOTS };
@@ -28,14 +39,14 @@ function getPaginationItems({ total = 20, current = 10, pageRange = 3 } = {}) {
     const result = items.filter(i => i.show).map(i => {
 
       delete i.show;
-  
+
       if (i.content.toString().trim() === current.toString().trim()) {
         i.active = true;
       }
-  
+
       return i;
     });
-  
+
     return result;
   }
 
@@ -82,21 +93,41 @@ function getPaginationItems({ total = 20, current = 10, pageRange = 3 } = {}) {
       }
     }
 
-    if(current === pageRange) {
-      page1.show = false;
-      page2.show = true;
-
-      if(i <= pageRange ) {
-        items[i].show = true;
-      }
-    }
-
-    if (current > pageRange) {
+    if (current >= pageRange && pageRange - DOTS > 2) {
 
       page1.show = true;
 
       //shuffle in the middle
-      if (current + 1 < total - pageRange + DOTS) {
+      if (current < total - pageRange + DOTS) {
+        page2.show = true;
+        const delt = current - Math.floor(pageRange / 2);
+
+        if (i > delt && i <= ((pageRange - DOTS) + delt)) {
+          items[i].show = true;
+        }
+
+      }
+      //shuffle in the end
+      else {
+        page2.show = false;
+        const delt = total - pageRange;
+
+        if (i > delt) {
+          items[i].show = true;
+        }
+      }
+    } else if (current === pageRange && pageRange - DOTS >= 1) {
+      page1.show = false;
+      page2.show = true;
+
+      if (i <= pageRange) {
+        items[i].show = true;
+      }
+    } else if (current > pageRange && pageRange - DOTS >= 1) {
+      page1.show = true;
+
+      //shuffle in the middle
+      if (current <= total - pageRange) {
         page2.show = true;
         const delt = current - Math.floor(pageRange / 2);
 
@@ -131,8 +162,7 @@ function getPaginationItems({ total = 20, current = 10, pageRange = 3 } = {}) {
   return result;
 }
 
-//render to html
-
+/* Render to HTML */
 let template = '';
 const items = getPaginationItems();
 
