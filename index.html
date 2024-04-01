@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Custom pagination</title>
-</head>
-<body>
-  <h1>Custom pagination</h1>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Pagination</title>
+    </head>
+    <body>
+        <h1>Pagination</h1>
 
-  <div id="pagination"></div>
-  
-  <script src="pagination.js"></script>
-</body>
+        <div id="pagination"></div>
+
+        <script src="pagination.js"></script>
+        <script>
+            document.getElementById('pagination').innerHTML = pagination(25, 50).toString();
+        </script>
+    </body>
 </html>
